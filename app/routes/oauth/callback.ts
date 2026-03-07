@@ -1,10 +1,12 @@
-import { type Request, type Response } from "express";
+import { env } from "~/utils/env";
+import type { Route } from "./+types/callback";
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { env } from "../env.js";
+import { redirect } from "react-router";
 
-export async function oauthCallback(req: Request, res: Response) {
-  const code = req.query["code"];
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const reqUrl = new URL(request.url);
+  const code = reqUrl.searchParams.get("code");
 
   const tokenRes = await axios.post(
     "https://github.com/login/oauth/access_token",
@@ -28,7 +30,7 @@ export async function oauthCallback(req: Request, res: Response) {
     expiresIn: "30d",
   });
 
-  const redirect = `obsidian://continu-sketch-auth?token=${pluginToken}&login=${user.login}&name=${user.name}`;
+  const redirectUrl = `obsidian://continu-sketch-auth?token=${pluginToken}&login=${user.login}&name=${user.name}`;
 
-  res.redirect(redirect);
-}
+  throw redirect(redirectUrl);
+};

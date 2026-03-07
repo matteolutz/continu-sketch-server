@@ -3,4 +3,8 @@ export const env = {
   GITHUB_CLIENT_SECRET: process.env["GITHUB_CLIENT_SECRET"]! as string,
 
   JWT_SECRET: process.env["JWT_SECRET"]! as string,
+
+  PORT:
+    typeof process.env.PORT !== "undefined" ? parseInt(process.env.PORT) : 3000,
+  HOST: process.env.HOST ?? "localhost",
 };
