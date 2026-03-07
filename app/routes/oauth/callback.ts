@@ -3,6 +3,7 @@ import type { Route } from "./+types/callback";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import { redirect } from "react-router";
+import { prisma } from "~/db.server";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const reqUrl = new URL(request.url);
@@ -26,9 +27,28 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
   const user = userRes.data;
 
-  const pluginToken = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
-    expiresIn: "30d",
+  const contiuSketchUser = await prisma.user.upsert({
+    where: {
+      githubId: user.id,
+    },
+    update: {
+      name: user.name,
+      githubLogin: user.login,
+    },
+    create: {
+      name: user.name,
+      githubLogin: user.login,
+      githubId: user.id,
+    },
   });
+
+  const pluginToken = jwt.sign(
+    { userId: contiuSketchUser.id },
+    env.JWT_SECRET,
+    {
+      expiresIn: "30d",
+    },
+  );
 
   const redirectUrl = `obsidian://continu-sketch-auth?token=${pluginToken}&login=${user.login}&name=${user.name}`;
 
