@@ -1,4 +1,4 @@
-import { env } from "~/utils/env";
+import { env } from "~/utils/env.server";
 import type { Route } from "./+types/callback";
 import axios from "axios";
 import jwt from "jsonwebtoken";
