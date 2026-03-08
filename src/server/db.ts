@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma-gen/client";
+import { PrismaClient } from "@prisma-gen/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const connectionString = process.env["STORAGE_POSTGRES_URL"];

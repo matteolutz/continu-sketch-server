@@ -1,44 +1,36 @@
 {
   "name": "continu-sketch-server",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "npx prisma generate && react-router build",
-    "build-only": "react-router build",
-    "dev": "react-router dev --port 3000",
-    "start-local": "cross-env NODE_ENV=production node --require dotenv/config ./server.js",
-    "start": "cross-env NODE_ENV=production node ./server.js",
-    "typecheck": "react-router typegen && tsc"
+    "prisma-generate": "prisma generate",
+    "dev": "nodemon -r dotenv/config -w src/server -x tsx src/server/main.ts",
+    "start": "cross-env NODE_ENV=production tsx src/server/main.ts",
+    "build": "prisma generate && vite build"
   },
   "dependencies": {
-    "@react-router/express": "^7.13.1",
-    "@react-router/node": "7.12.0",
-    "axios": "^1.13.6",
-    "cors": "^2.8.6",
-    "cross-env": "^10.1.0",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "isbot": "^5.1.31",
-    "jsonwebtoken": "^9.0.3",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-router": "7.12.0"
-  },
-  "devDependencies": {
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
-    "@react-router/dev": "7.12.0",
-    "@tailwindcss/vite": "^4.1.13",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^22",
-    "@types/pg": "^8.18.0",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
+    "cross-env": "^7.0.3",
+    "express": "^5.1.0",
     "pg": "^8.20.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vite-express": "*"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.2",
+    "@types/pg": "^8.18.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "dotenv": "^17.3.1",
+    "nodemon": "^3.1.10",
     "prisma": "^7.4.2",
-    "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.7",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite": "^6.3.3"
   }
 }
