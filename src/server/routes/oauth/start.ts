@@ -10,7 +10,7 @@ export const startOAuth = (req: Request, res: Response) => {
     (req.query.receiver as OAuthReceiver | undefined) ?? "obsidian";
 
   const redirectUri = encodeURIComponent(
-    `http://${env.PUBLIC_HOST}/oauth/callback?receiver=${receiver}`,
+    `${env.PUBLIC_HOST}/oauth/callback?receiver=${receiver}`,
   );
 
   const url =
