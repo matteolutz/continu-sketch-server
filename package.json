@@ -6,8 +6,8 @@
   "scripts": {
     "prisma-generate": "prisma generate",
     "dev": "nodemon -r dotenv/config -w src/server -x tsx src/server/main.ts",
-    "start": "cross-env NODE_ENV=production tsx src/server/main.ts",
-    "build": "prisma generate && vite build"
+    "start-prod": "prisma migrate deploy && prisma generate && cross-env NODE_ENV=production tsx src/server/main.ts",
+    "build": "vite build"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.2",
