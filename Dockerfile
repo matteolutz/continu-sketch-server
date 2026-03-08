@@ -15,4 +15,8 @@ COPY . .
 
 RUN yarn install
 
+ARG PORT=3000
+ENV PORT $PORT
+EXPOSE $PORT
+
 CMD ["yarn", "start-prod"]
