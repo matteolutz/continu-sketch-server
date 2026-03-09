@@ -17,7 +17,11 @@ COPY --from=builder /app/out/json/ .
 RUN yarn install --frozen-lockfile
 
 COPY --from=builder /app/out/full .
+
+ARG STORAGE_POSTGRES_URL
+ENV STORAGE_POSTGRES_URL=$STORAGE_POSTGRES_URL
 RUN yarn prisma generate
+
 RUN yarn turbo run build
 
 
