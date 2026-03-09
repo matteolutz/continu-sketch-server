@@ -19,7 +19,7 @@ RUN yarn install --frozen-lockfile
 ENV NODE_ENV=production
 
 COPY --from=builder /app/out/full .
-COPY ./prisma ./
+COPY ./prisma prisma.config.ts ./
 RUN yarn prisma generate
 
 # Vite uses quite a lot of memory while building
