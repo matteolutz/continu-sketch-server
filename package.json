@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "prisma-generate": "prisma generate",
-    "dev": "nodemon -r dotenv/config -w src/server -x tsx src/server/main.ts",
+    "dev": "vite dev & nodemon -r dotenv/config -w src/server -x tsx src/server/main.ts",
     "start-prod": "prisma migrate deploy && prisma generate && cross-env NODE_ENV=production tsx src/server/main.ts",
     "build": "vite build"
   },
@@ -13,8 +13,11 @@
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "axios": "^1.13.6",
+    "cors": "^2.8.6",
     "cross-env": "^7.0.3",
     "express": "^5.1.0",
+    "express-validator": "^7.3.1",
+    "express-ws": "^5.0.2",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.20.0",
     "react": "^19.1.0",
@@ -24,7 +27,9 @@
     "vite-express": "*"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.1",
+    "@types/express-ws": "^3.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.15.2",
     "@types/pg": "^8.18.0",
