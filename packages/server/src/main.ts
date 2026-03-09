@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from "express";
-import ViteExpress from "vite-express";
 import { continuSketchError, ContinuSketchError } from "./error.js";
 import expressWs from "express-ws";
 import { setupRoutes } from "./routes/index.js";
@@ -9,6 +8,8 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
 const wsApp = expressWs(app);
+
+app.use(cors());
 
 const router = setupRoutes(wsApp);
 app.use(router);
@@ -29,6 +30,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.json({ error: err.type });
 });
 
-ViteExpress.listen(app, PORT, () =>
-  console.log("Server is listening on port 3000..."),
-);
+app.listen(PORT, () => {
+  console.log("Server is listening on port 3000...");
+});

@@ -2,43 +2,25 @@
   "name": "continu-sketch-server",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@1.22.22",
   "scripts": {
-    "prisma-generate": "prisma generate",
-    "dev": "vite dev & nodemon -r dotenv/config -w src/server -x tsx src/server/main.ts",
-    "start-prod": "prisma migrate deploy && prisma generate && cross-env NODE_ENV=production tsx src/server/main.ts",
-    "build": "vite build"
+    "server": "yarn workspace server",
+    "client": "yarn workspace client",
+    "dev": "concurrently \"yarn server dev\" \"yarn client dev\""
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.4.2",
-    "@prisma/client": "^7.4.2",
-    "axios": "^1.13.6",
-    "cors": "^2.8.6",
-    "cross-env": "^7.0.3",
-    "express": "^5.1.0",
-    "express-validator": "^7.3.1",
-    "express-ws": "^5.0.2",
-    "jsonwebtoken": "^9.0.3",
-    "pg": "^8.20.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.3",
-    "vite-express": "*"
+    "axios": "^1.13.6"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.1",
-    "@types/express-ws": "^3.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.15.2",
-    "@types/pg": "^8.18.0",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.4.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^17.3.1",
     "nodemon": "^3.1.10",
     "prisma": "^7.4.2",
-    "vite": "^6.3.3"
+    "turbo": "^2.8.14"
   }
 }

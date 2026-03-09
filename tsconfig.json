@@ -10,14 +10,9 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-
-    "paths": {
-      "@prisma-gen/*": ["./prisma/generated/prisma/*"],
-    },
   },
-  "include": ["src"],
 }
