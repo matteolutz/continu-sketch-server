@@ -1,7 +1,7 @@
 export type ContinuSketchErrorType =
   | {
       type: "unauthenticated";
-      reason: "invalid-authorization-header" | "invalid-jwt" | "user-not-found";
+      reason: "invalid-authorization-header" | "invalid-jwt" | "user-not-found" | "invalid-session";
     }
   | {
       type: "validation-error";

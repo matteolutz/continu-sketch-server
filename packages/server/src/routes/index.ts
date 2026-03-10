@@ -8,9 +8,17 @@ import { body } from "express-validator";
 import { validationMiddleware } from "../middlware/validation.js";
 import expressWs from "express-ws";
 
-export const setupRoutes = (app: expressWs.Instance) => {
+import cors from "cors";
+import session from "express-session";
+import { env } from "../env.js";
+import { getMe } from "./web/me.js";
+import { logout } from "./web/logout.js";
+
+export const setupDefaultRoutes = (app: expressWs.Instance) => {
   const router = express.Router();
   app.applyTo(router);
+
+  router.use(cors());
 
   router.get("/oauth/start", startOAuth);
   router.get("/oauth/callback", oauthCallback);
@@ -25,6 +33,45 @@ export const setupRoutes = (app: expressWs.Instance) => {
   );
 
   router.ws("/ws/obsidian", wsAuthMiddleware, obsidianWs);
+
+  return router;
+}
+
+export const setupWebRoutes = (app: expressWs.Instance) => {
+  const router = express.Router();
+
+  router.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+  }));
+
+  router.get("/me", getMe);
+  router.post("/logout", logout);
+
+  return router;
+}
+
+export const setupRoutes = (app: expressWs.Instance) => {
+  const router = express.Router();
+  app.applyTo(router);
+
+  router.use(session({
+    name: "session",
+    secret: env.JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+
+    cookie: {
+      httpOnly: true,
+      secure: false, // TODO: set this to true
+      sameSite: false,
+      // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    }
+  }));
+
+  router.use(setupDefaultRoutes(app));
+  router.use("/web", setupWebRoutes(app));
 
   return router;
 };

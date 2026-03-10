@@ -8,6 +8,7 @@ import { OAuthReceiver } from "./start.js";
 export const oauthCallback = async (req: Request, res: Response) => {
   const code = req.query["code"];
   const receiver = req.query["receiver"] as OAuthReceiver;
+  const redirect = req.query["redirect"] as string | undefined;
 
   const tokenRes = await axios.post(
     "https://github.com/login/oauth/access_token",
@@ -51,8 +52,10 @@ export const oauthCallback = async (req: Request, res: Response) => {
   );
 
   switch (receiver) {
-    case "frontend":
-      // TODO:
+    case "session":
+      req.session.userId = continuSketchUser.id;
+      if (redirect)
+        res.redirect(redirect);
       break;
     case "obsidian":
       const obsidianRedirect = `obsidian://continu-sketch-auth?token=${pluginToken}&login=${user.login}&name=${user.name}`;
