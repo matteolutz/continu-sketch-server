@@ -17,6 +17,10 @@ COPY --from=builder /app/out/json/ .
 RUN yarn install --frozen-lockfile
 
 COPY --from=builder /app/out/full .
+COPY tsconfig.json prisma.config.ts ./
+COPY prisma ./prisma
+
+RUN apt-get update -y && apt-get install -y openssl
 
 ARG STORAGE_POSTGRES_URL
 ENV STORAGE_POSTGRES_URL=$STORAGE_POSTGRES_URL
@@ -34,7 +38,6 @@ COPY --from=builder /app/out/json/ .
 
 RUN yarn install --production --frozen-lockfile
 COPY --from=installer /app/node_modules/.prisma /app/node_modules/.prisma
-
 COPY --from=installer /app/packages/server/dist/ ./packages/server/dist/
 
 ENV PORT=3000

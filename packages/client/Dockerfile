@@ -3,6 +3,7 @@ FROM node:22-bookworm-slim AS base
 FROM base AS builder
 WORKDIR /app
 
+
 RUN yarn global add turbo@^2
 COPY . .
 
@@ -19,7 +20,13 @@ RUN yarn install --frozen-lockfile
 ENV NODE_ENV=production
 
 COPY --from=builder /app/out/full .
-COPY ./prisma prisma.config.ts ./
+COPY tsconfig.json prisma.config.ts ./
+COPY prisma ./prisma
+
+RUN apt-get update -y && apt-get install -y openssl
+
+ARG STORAGE_POSTGRES_URL
+ENV STORAGE_POSTGRES_URL=$STORAGE_POSTGRES_URL
 RUN yarn prisma generate
 
 # Vite uses quite a lot of memory while building

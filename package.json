@@ -12,12 +12,13 @@
     "dev": "concurrently \"yarn server dev\" \"yarn client dev\""
   },
   "dependencies": {
-    "axios": "^1.13.6"
+    "axios": "^1.13.6",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
+    "@prisma/client": "^7.4.2",
     "@types/node": "^22.15.2",
     "concurrently": "^9.2.1",
-    "cross-env": "^7.0.3",
     "dotenv": "^17.3.1",
     "nodemon": "^3.1.10",
     "prisma": "^7.4.2",
