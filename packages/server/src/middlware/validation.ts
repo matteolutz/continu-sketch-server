@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { continuSketchError } from "../error.js";
 
@@ -11,6 +11,8 @@ export const validationMiddleware = (
   if (result.isEmpty()) {
     return next();
   }
+
+  console.log(result);
 
   throw continuSketchError({
     type: "validation-error",

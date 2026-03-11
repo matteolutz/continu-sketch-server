@@ -27,6 +27,12 @@ model User {
   handoffs  Handoff[]
 }
 
+enum HandoffState {
+  CREATED
+  CONNECTED
+  DONE
+}
+
 model Handoff {
   id Int @id @default(autoincrement())
 
@@ -36,7 +42,7 @@ model Handoff {
   userId Int
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  isPending Boolean @default(true)
+  state HandoffState @default(CREATED)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

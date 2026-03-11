@@ -1,4 +1,4 @@
-import { User } from "@prisma-gen/client.ts";
+import type { User } from "@prisma/client";
 
 declare module "express-serve-static-core" {
   interface Request {

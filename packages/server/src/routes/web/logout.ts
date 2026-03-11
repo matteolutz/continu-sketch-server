@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from "express";
 
 export const logout = (req: Request, res: Response) => {
   req.session.destroy((err) => {
@@ -9,9 +9,9 @@ export const logout = (req: Request, res: Response) => {
     res.clearCookie("session", {
       httpOnly: true,
       secure: false,
-      sameSite: false
+      sameSite: false,
     });
 
     res.sendStatus(204);
   });
-}
+};

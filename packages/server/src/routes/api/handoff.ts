@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { type Request, type Response } from "express";
 import { prisma } from "../../db.js";
 
 export const createHandoff = async (req: Request, res: Response) => {

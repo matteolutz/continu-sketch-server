@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { type NextFunction, type Request, type Response } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../env.js";
 import { prisma } from "../db.js";
@@ -74,9 +74,17 @@ export const wsAuthMiddleware = async (
   next: NextFunction,
 ) => {
   try {
-    req.user = await getUserFromReq(req);
+    const token = req.query["token"] as string | undefined;
+    if (typeof token === "undefined") {
+      throw continuSketchError({
+        type: "unauthenticated",
+        reason: "invalid-jwt",
+      });
+    }
+
+    req.user = await getUserFromToken(token);
   } catch (err) {
-    ws.terminate();
+    ws.close(401, "Unauthorized");
     return;
   }
 

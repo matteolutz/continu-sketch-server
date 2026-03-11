@@ -1,4 +1,11 @@
-import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  type FC,
+  type PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { type User } from "@prisma/client";
 
 export const UserContext = createContext<User | null>(null);

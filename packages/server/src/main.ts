@@ -1,15 +1,18 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import { continuSketchError, ContinuSketchError } from "./error.js";
 import expressWs from "express-ws";
 import { setupRoutes } from "./routes/index.js";
-import cors from "cors";
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const app = express();
 const wsApp = expressWs(app);
 
-app.use(cors());
+app.use(express.json());
 
 const router = setupRoutes(wsApp);
 app.use(router);

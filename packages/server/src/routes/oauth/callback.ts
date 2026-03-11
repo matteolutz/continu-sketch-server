@@ -3,7 +3,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 import { env } from "../../env.js";
 import { prisma } from "../../db.js";
-import { OAuthReceiver } from "./start.js";
+import { type OAuthReceiver } from "./start.js";
 
 export const oauthCallback = async (req: Request, res: Response) => {
   const code = req.query["code"];
@@ -54,8 +54,7 @@ export const oauthCallback = async (req: Request, res: Response) => {
   switch (receiver) {
     case "session":
       req.session.userId = continuSketchUser.id;
-      if (redirect)
-        res.redirect(redirect);
+      if (redirect) res.redirect(redirect);
       break;
     case "obsidian":
       const obsidianRedirect = `obsidian://continu-sketch-auth?token=${pluginToken}&login=${user.login}&name=${user.name}`;

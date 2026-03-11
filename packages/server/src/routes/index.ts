@@ -13,6 +13,7 @@ import session from "express-session";
 import { env } from "../env.js";
 import { getMe } from "./web/me.js";
 import { logout } from "./web/logout.js";
+import { clientWs } from "./ws/client.js";
 
 export const setupDefaultRoutes = (app: expressWs.Instance) => {
   const router = express.Router();
@@ -35,40 +36,47 @@ export const setupDefaultRoutes = (app: expressWs.Instance) => {
   router.ws("/ws/obsidian", wsAuthMiddleware, obsidianWs);
 
   return router;
-}
+};
 
 export const setupWebRoutes = (app: expressWs.Instance) => {
   const router = express.Router();
+  app.applyTo(router);
 
-  router.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-  }));
+  router.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    }),
+  );
 
   router.get("/me", getMe);
   router.post("/logout", logout);
 
+  router.ws("/ws", clientWs);
+
   return router;
-}
+};
 
 export const setupRoutes = (app: expressWs.Instance) => {
   const router = express.Router();
   app.applyTo(router);
 
-  router.use(session({
-    name: "session",
-    secret: env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: false,
+  router.use(
+    session({
+      name: "session",
+      secret: env.JWT_SECRET,
+      resave: false,
+      saveUninitialized: false,
 
-    cookie: {
-      httpOnly: true,
-      secure: false, // TODO: set this to true
-      sameSite: false,
-      // 7 days
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    }
-  }));
+      cookie: {
+        httpOnly: true,
+        secure: false, // TODO: set this to true
+        sameSite: false,
+        // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      },
+    }),
+  );
 
   router.use(setupDefaultRoutes(app));
   router.use("/web", setupWebRoutes(app));
