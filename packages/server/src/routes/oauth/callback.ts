@@ -53,6 +53,7 @@ export const oauthCallback = async (req: Request, res: Response) => {
 
   switch (receiver) {
     case "session":
+      console.log("setting session");
       req.session.userId = continuSketchUser.id;
       if (redirect) res.redirect(redirect);
       break;

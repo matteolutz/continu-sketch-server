@@ -114,7 +114,7 @@ export class ClientWebsocketHandler {
 
 export const clientWs = async (ws: ws.WebSocket, req: Request) => {
   if (typeof req.session.userId === "undefined") {
-    ws.close(401, "Unauthorized");
+    ws.close(3000, "Unauthorized"); // 3000 = HTTP 401
     return;
   }
 

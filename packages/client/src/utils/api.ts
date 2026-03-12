@@ -1,10 +1,10 @@
-const API_HOST = "localhost:3000";
+const API_HOST = "192.168.2.210:3000";
 const API_HOST_SECURE = false;
 
 const getHttpProtocol = (secure: boolean) => (secure ? "https" : "http");
 const getWsProtocol = (secure: boolean) => (secure ? "wss" : "ws");
 
-const OAUTH_REDIRECT = "http://localhost:5173";
+const OAUTH_REDIRECT = "http://192.168.2.210:5173";
 const OAUTH_START = `${getHttpProtocol(API_HOST_SECURE)}://${API_HOST}/oauth/start?receiver=session&redirect=${OAUTH_REDIRECT}`;
 
 const API_URL = `${getHttpProtocol(API_HOST_SECURE)}://${API_HOST}/web`;

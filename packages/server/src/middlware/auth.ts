@@ -84,7 +84,7 @@ export const wsAuthMiddleware = async (
 
     req.user = await getUserFromToken(token);
   } catch (err) {
-    ws.close(401, "Unauthorized");
+    ws.close(3000, "Unauthorized"); // 3000 = HTTP 401
     return;
   }
 

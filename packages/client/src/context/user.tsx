@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { type User } from "@prisma/client";
+import { getApiUrl } from "../utils/api";
 
 export const UserContext = createContext<User | null>(null);
 
@@ -14,7 +15,7 @@ export const UserProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/web/me", { credentials: "include" })
+    fetch(getApiUrl("me"), { credentials: "include" })
       .then((res) => res.json())
       .then(({ user }) => setUser(user));
   }, []);

@@ -64,11 +64,10 @@ const ExcalidrawFileComponent: HandoffFileComponent = ({
       <Excalidraw
         onPointerUpdate={() => (didChangeRef.current = true)}
         excalidrawAPI={(api) => (excalidrawApiRef.current = api)}
-        onChange={(elements, appState, files) => {
+        onChange={(elements, _, files) => {
           fileRef.current.excalidraw = {
             ...fileRef.current.excalidraw,
             elements,
-            appState,
             files,
           };
         }}
