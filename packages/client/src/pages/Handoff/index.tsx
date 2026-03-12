@@ -2,10 +2,30 @@ import { Link, useParams } from "react-router";
 import { useWebsocketContext } from "../../context/ws";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import {
+  getHandoffFileType,
+  HANDOFF_FILE_LUT,
+  type HandoffFileComponentRef,
+  type HandoffFileInit,
+} from "./file";
+
+type DataChannelClientMessage = {
+  type: "diff";
+  diff: unknown;
+};
+
+type DataChannelObsidianMessage = {
+  type: "file";
+} & HandoffFileInit;
 
 const HandoffPage = () => {
   const { id } = useParams();
   const ws = useWebsocketContext();
+
+  const [file, setFile] = useState<HandoffFileInit | null>(null);
+  const fileComponentRef = useRef<HandoffFileComponentRef>(null);
+
+  const dcRef = useRef<RTCDataChannel>(null);
 
   const navigate = useNavigate();
 
@@ -50,13 +70,22 @@ const HandoffPage = () => {
     };
 
     const dataChannel = pc.createDataChannel("handoff");
-    dataChannel.addEventListener("message", (event) => {
-      const message = JSON.parse(event.data);
-      console.log(message);
-    });
+
     dataChannel.addEventListener("open", (event) => {
-      console.log("data channel is open, sending hello");
-      dataChannel.send("hello");
+      dcRef.current = dataChannel;
+
+      dataChannel.addEventListener("message", (event) => {
+        const message = JSON.parse(event.data) as DataChannelObsidianMessage;
+        console.log("got message", message);
+
+        switch (message.type) {
+          case "file":
+            setFile(message);
+            break;
+        }
+      });
+
+      console.log("data channel is open");
     });
 
     (async () => {
@@ -84,8 +113,26 @@ const HandoffPage = () => {
     };
   }, [id]);
 
+  const Component = file ? HANDOFF_FILE_LUT[getHandoffFileType(file)] : null;
+
   return (
-    <div>
+    <div style={{ width: "100%", height: "100%" }}>
+      {Component && (
+        <Component
+          ref={fileComponentRef}
+          fileInit={file!}
+          onChange={(diff) => {
+            console.log("sending diff", diff);
+
+            dcRef.current?.send(
+              JSON.stringify({
+                type: "diff",
+                diff,
+              } satisfies DataChannelClientMessage),
+            );
+          }}
+        />
+      )}
       Go to <Link to="/dashboard">Dashboard</Link>
     </div>
   );

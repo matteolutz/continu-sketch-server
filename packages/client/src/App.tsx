@@ -7,6 +7,7 @@ import { redirect } from "react-router";
 import { Navigate } from "react-router";
 import { Link } from "react-router";
 import HandoffPage from "./pages/Handoff";
+import { ExcalidrawFormatStrategy } from "continu-sketch-diff";
 
 const App = () => {
   const user = useUser();
